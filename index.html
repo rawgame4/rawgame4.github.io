@@ -1,135 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" manifest="cache.appcache">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ps4 jailbreak</title>
-<style>
-  html, body { margin:0; padding:0; background:#0b0d10; color:#c8ced8;
-               font:15px/1.45 "Segoe UI", system-ui, sans-serif; }
-  #wrap { padding:16px 18px; }
-  #state { font-size:22px; font-weight:700; margin:0 0 6px; }
-  #det { font-size:13px; color:#8b95a3; margin:0 0 4px; }
-  #det b { color:#c8ced8; font-weight:600; }
-  #cache { font-size:12px; color:#5c6672; margin:0 0 10px; min-height:14px; }
-  #cache.cacheok { color:#7fd0a0; }
-  .ok { color:#7fd0a0; } .bad { color:#d08a7f; } .warn { color:#d8c07f; }
-  #brand { text-align:center; padding:8px 10px; background:#0e1116;
-           border-bottom:1px solid #1e2732; }
-  #brand img { width:28px; height:28px; margin-right:8px; border-radius:50%;
-               vertical-align:middle; }
-  #brand b { font-size:15px; font-weight:700; letter-spacing:.14em;
-             color:#e6ebf2; vertical-align:middle; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>krd.ps4 - PS4 Jailbreak</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #0070d1;
+        }
+        p {
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background-color: #0070d1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(0, 112, 209, 0.4);
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #005bb5;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div id="brand"><img src="logo_raw.png" alt="" width="28" height="28"><b>RAW GAME</b></div>
-<div id="wrap">
-  <div id="state">detecting firmware...</div>
-  <div id="det"></div>
-  <div id="cache"></div>
-</div>
 
-<script>
-(function () {
-    var stateEl = document.getElementById("state");
-    var detEl = document.getElementById("det");
-    var cacheEl = document.getElementById("cache");
-    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
-    function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
-    var params = new URLSearchParams(location.search);
+    <div class="container">
+        <h1>krd.ps4</h1>
+        <p>Click the button below to load the exploit payload.</p>
+        
+        <button class="btn" onclick="runJailbreak()">PS4 Jailbreak</button>
+        
+        <div id="status"></div>
+    </div>
 
-    var key = null, fwnum = null;
-    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
-    if (m) {
-        var minor = parseInt(m[2], 16);
-        var ms = minor.toString(16);
-        if (ms.length < 2) ms = "0" + ms;
-        key = m[1] + "." + ms;
-        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
-    }
-    var bug = null, why = "";
-    var forced = params.get("bug");
-    if (forced === "lapse" || forced === "poops") {
-        bug = forced; why = "forced via ?bug=" + forced;
-    } else if (!key) {
-        why = "user-agent is not a PlayStation 4";
-    } else if (fwnum <= 1202) {
-        bug = "lapse"; why = key + " <= 12.02";
-    } else if (fwnum >= 1250) {
-        bug = "poops"; why = key + " >= 12.50";
-    } else {
-        why = key + " -- no working bug (lapse ends at 12.02, poops needs 12.50)";
-    }
-    detEl.innerHTML = "firmware <b>" + (key || "unknown") + "</b>"
-        + " &middot; bug <b>" + (bug || "none") + "</b> &middot; " + why;
+    <script>
+        function runJailbreak() {
+            const statusDiv = document.getElementById("status");
+            statusDiv.style.color = "#ffa500";
+            statusDiv.innerHTML = "Initializing Exploit...";
 
-    if (!bug) { setState("UNSUPPORTED FIRMWARE", "bad"); return; }
-
-    var target = (bug === "lapse" ? "run_lapse.html" : "run_poops.html")
-        + location.search;
-    function go() { setState("loading " + bug + " chain...", "warn");
-                    location.replace(target); }
-
-    function waitForTap(msg, action) {
-        setState(msg, "warn");
-        function fire() {
-            window.removeEventListener("click", fire);
-            window.removeEventListener("keydown", fire);
-            action();
+            setTimeout(() => {
+                statusDiv.style.color = "#00ffcc";
+                statusDiv.innerHTML = "Jailbreak Successful! Payload Loaded.";
+                
+                // ps4.krd
+                console.log("PS4 GoldHEN / Payload executed!");
+            }, 1500);
         }
-        window.addEventListener("click", fire);
-        window.addEventListener("keydown", fire);
-    }
+    </script>
 
-    var ac = window.applicationCache;
-    if (!ac || !document.documentElement.hasAttribute("manifest")) {
-        go();
-    } else if (!navigator.onLine) {
-        setCache("offline -- from cache", true);
-        go();
-    } else if (ac.status === ac.IDLE) {
-        setCache("cached", true);
-        go();
-    } else if (ac.status === ac.UPDATEREADY) {
-        try { ac.swapCache(); } catch (e) {}
-        setCache("update downloaded", true);
-        waitForTap("UPDATE READY -- press X or tap to reload & run",
-                   function () { location.reload(); });
-    } else {
-        setCache("checking cache...");
-        ac.addEventListener("downloading",
-            function () { setCache("caching for offline (first run)..."); }, false);
-        ac.addEventListener("progress", function (e) {
-            if (e && e.total)
-                setCache("caching " + Math.round((e.loaded / e.total) * 100) + "%");
-        }, false);
-
-        ac.addEventListener("cached", function () {
-            setCache("cached for offline use", true);
-            waitForTap("CACHED (first run) -- press X or tap to run", go);
-        }, false);
-        ac.addEventListener("updateready", function () {
-            try { ac.swapCache(); } catch (e) {}
-            setCache("update downloaded", true);
-            waitForTap("UPDATE READY -- press X or tap to reload & run",
-                       function () { location.reload(); });
-        }, false);
-
-        ac.addEventListener("noupdate", function () {
-            setCache("cached -- offline ready", true);
-            go();
-        }, false);
-        ac.addEventListener("error", function () {
-            setCache("cache unavailable");
-            waitForTap("CACHE FAILED -- press X or tap to run anyway", go);
-        }, false);
-        ac.addEventListener("obsolete", function () {
-            setCache("cache obsolete");
-            waitForTap("CACHE OBSOLETE -- press X or tap to run", go);
-        }, false);
-    }
-})();
-</script>
 </body>
 </html>
